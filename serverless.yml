@@ -1,0 +1,31 @@
+service: go-serverless
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: go1.x
+  stage: dev
+  region: sa-east-1
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:PutItem
+          Resource:
+            - deixa_para_depois
+
+package:
+  patterns:
+    - '!./**'
+    - ./bin/**
+
+functions:
+  insertProduct:
+    handler: bin/InsertProduct
+    events:
+      - httpApi:
+          path: /product
+          method: post
+
